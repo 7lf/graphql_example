@@ -1,0 +1,17 @@
+{
+    "database": {
+        "dialect" : "mysql", // используем mysql
+        "host": "localhost", // хост с БД
+        "name": "dbname", // название базы данных
+        "user": "dbuser", // пользователь бд
+        "password": "dbpassword", // пароль к БД для пользователя
+        "pool": { // настройка пула соединений
+            "max": 5,
+            "min": 0,
+            "acquire": 30000,
+            "idle": 100000
+        }
+    },
+    "secret": "jwtsecret", // секрет для генерации сессии
+    "port": 4000 // порт приложения
+}
