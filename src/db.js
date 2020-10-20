@@ -81,7 +81,7 @@ const getUser = async (data) => {
   const result = await TableUsers.findOne({
     where: {
       email: data.email,
-      password: data.password,
+      // password: data.password,
     },
     raw: true
   });

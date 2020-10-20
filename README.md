@@ -2,6 +2,10 @@
 
 Создано в [7LF](https://company.7lf.ru)
 
+## История
+* 1.0.1 - исправление ошибки при login'е пользователя
+* 1.0.0 - первый выпуск
+
 ## База данных
 
 ### Таблица для хранения путей
@@ -20,7 +24,7 @@ CREATE TABLE `access_paths` (
   `createdAt` datetime DEFAULT NULL,
   `updatedAt` datetime DEFAULT NULL COMMENT 'id хозяина/созда',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Пути';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='Пути';
 
 ### Таблица хранит соотношение пользователь-путь
 
@@ -43,7 +47,7 @@ CREATE TABLE `users` (
   `disabledAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='Пользователи';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='Пользователи';
 
 ## Модули
 

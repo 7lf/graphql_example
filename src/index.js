@@ -51,21 +51,20 @@ const server = new ApolloServer({
 });
 //-------------------------------------------------------------------
 app.use('/graphql', (req, res, next) => {
-  passport.authenticate('jwt', { session: false }, async (err, user, info) => { // проверили и получили пользователя
-    // проверяем пользователя на доступ к типу и названию зароса
-    const query = req.body.query;
-    const obj = gql`${query}`;
+  const query = req.body.query;
+  const obj = gql`${query}`;
+  if ((obj.definitions[0].operation !== 'mutation') && (obj.definitions[0].selectionSet.selections[0].name.value !== 'loginUser')) { // || (obj.definitions[0].selectionSet.selections[0].name.value !== 'registerUser')) {
+    passport.authenticate('jwt', { session: false }, async (err, user, info) => { // проверили и получили пользователя
+      // проверяем пользователя на доступ к типу и названию зароса
+      console.log('====', err, user, info);
+      if (user === false) {
+        req.error = 'User not found!';
+        req.user = [];
+      }
 
-    let result = await db.checkAccess(user, obj.definitions[0].operation, obj.definitions[0].selectionSet.selections[0].name.value);
-    if (result.status === 'error') { // пользователь не имеет прав для доступа
-      req.error = 'Access denided!';
-      req.user = [];
-    } else {
-      req.user = user;
-    }
-       
-    next();
-  })(req, res, next);
+    })(req, res, next);
+  }
+  next();
 });
 //-------------------------------------------------------------------
 server.applyMiddleware({
@@ -82,7 +81,7 @@ const main = async () => {
         port: port
       },
       () => {
-        console.log(`🚀  CYP server ready. Port:`, port);
+        console.log(`🚀 Example server ready. Port:`, port);
       });
     }
   });
@@ -92,6 +91,14 @@ main();
 
 /*
 Примеры:
+
+Вход пользователя:
+mutation {
+  loginUser(data: {email: "test@test.ru2", password: "123456"}) {
+    token
+    error
+  }
+}
 
 Пример запроса с фильтром:
 query {
@@ -104,6 +111,7 @@ query {
 
 Фильтр будет по id = 1. Так же можно написать чтобы искал по любому полю, например, name_en.
 
+eyJhbGciOiJIUzI1NiJ9.b2s._gOMH_ffHySGsjow7F5ZlVb8RFbsAKopN8s9ux_P3DI
 
 Регистрация пользователя
 mutation {

@@ -14,7 +14,6 @@ const resolvers = {
         let user = db.usersGet(filter);
         return user;
     }
-    // Если надо вернуть ошибку, то надо писать так: return new Error('User not found');
   },
   Mutation: { // Здесь описываем что надо изменять
     signupUser: async (root, args, _, info) => {
@@ -27,12 +26,19 @@ const resolvers = {
         return {token : jwt.sign(newUser, config.secret)};
     },
     loginUser: async (root, args, _, info)  => {
-      const { data: { email, password } } = args;
-      const [ theUser ] = await db.getUser({ email: email});
-      if (!theUser) throw new Error('Unable to Login');
-      const isMatch = bcrypt.compareSync(password, theUser.password);
-      if (!isMatch) throw new Error('Unable to Login');
-      return {token : jwt.sign(theUser, config.secret)};
+      if (_.req.req.error) {
+        return {error: _.req.req.error};
+      } else {
+        const { data: { email, password } } = args;
+        const [ theUser ] = await db.getUser({ email: email});
+        if (theUser.status === 'error') {
+          return {error: theUser.data};
+        } else {
+          const isMatch = bcrypt.compareSync(password, theUser.password);
+          if (!isMatch) throw new Error('Bad password');
+          return {token : jwt.sign(theUser, config.secret)};
+        }
+      }
     }
   }
 };

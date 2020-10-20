@@ -1,6 +1,6 @@
 {
   "name": "cyp-backend",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "GraphQL and Sequelize example",
   "main": "index.js",
   "dependencies": {
@@ -64,5 +64,5 @@
   "author": "7LF",
   "license": "ISC",
   "homepage": "",
-  "build": "16101319"
+  "build": "20101017"
 }

@@ -15,7 +15,8 @@ const typeDefs = gql`
     }
 
     type AuthPayLoad {
-        token: String!
+        token: String
+        error: String
     }
 
     type User {
